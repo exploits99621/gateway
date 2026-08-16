@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful - Personal Gateway</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">💰 Personal Gateway</div>
+        <div class="nav-links">
+            <a href="/dashboard">📊 Dashboard</a>
+            <a href="/generate">➕ New QR</a>
+            <a href="/api-keys">🔑 API Keys</a>
+            <a href="/logout">🚪 Logout</a>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="success-container">
+            <div class="success-icon">✅</div>
+            <h1>Payment Successful!</h1>
+            <p class="subtitle">Your payment has been verified and confirmed</p>
+            
+            <div class="success-card">
+                <div class="detail-row">
+                    <span class="label">Order ID:</span>
+                    <span class="value">{{ transaction.order_id }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Amount:</span>
+                    <span class="value highlight">₹{{ transaction.amount }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">UPI ID:</span>
+                    <span class="value">{{ transaction.upi_id }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Transaction ID:</span>
+                    <span class="value highlight">{{ transaction.transaction_id }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Status:</span>
+                    <span class="value success-text">✅ Verified</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Payment Time:</span>
+                    <span class="value">{{ transaction.verified_at or transaction.created_at }}</span>
+                </div>
+            </div>
+            
+            <div class="success-actions">
+                <a href="/generate" class="btn-primary">📱 Generate New QR</a>
+                <a href="/dashboard" class="btn-secondary">📊 Go to Dashboard</a>
+                <button onclick="window.print()" class="btn-secondary">🖨️ Print Receipt</button>
+            </div>
+            
+            <div class="notification-sent">
+                <p>📧 Email notification sent to your Gmail</p>
+                <p class="small">Check your inbox for payment confirmation</p>
+            </div>
+        </div>
+    </div>
+    
+    <style>
+        .success-container {
+            max-width: 550px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+        
+        .success-icon {
+            font-size: 80px;
+            margin-bottom: 10px;
+            animation: bounce 0.6s ease;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        .success-container h1 {
+            color: #28a745;
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 25px;
+        }
+        
+        .success-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: left;
+            margin-bottom: 25px;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        
+        .label {
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .value {
+            color: #333;
+            font-weight: 600;
+            word-break: break-all;
+            text-align: right;
+            max-width: 60%;
+        }
+        
+        .highlight {
+            color: #28a745;
+            font-weight: 700;
+        }
+        
+        .success-text {
+            color: #28a745;
+            font-weight: 700;
+        }
+        
+        .success-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .success-actions .btn-primary {
+            width: auto;
+            padding: 12px 30px;
+        }
+        
+        .success-actions .btn-secondary {
+            padding: 12px 25px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .success-actions .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+        
+        .notification-sent {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .notification-sent p {
+            color: #666;
+            margin: 3px 0;
+        }
+        
+        .notification-sent .small {
+            font-size: 13px;
+            color: #999;
+        }
+        
+        @media (max-width: 640px) {
+            .success-container {
+                padding: 25px 20px;
+            }
+            
+            .success-actions {
+                flex-direction: column;
+            }
+            
+            .success-actions .btn-primary,
+            .success-actions .btn-secondary {
+                width: 100%;
+            }
+            
+            .detail-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+            
+            .value {
+                text-align: left;
+                max-width: 100%;
+                width: 100%;
+            }
+        }
+    </style>
+    
+    <script>
+        // Auto redirect to dashboard after 10 seconds
+        setTimeout(() => {
+            window.location.href = '/dashboard';
+        }, 10000);
+    </script>
+</body>
+</html>

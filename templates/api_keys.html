@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Keys - Personal Gateway</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">💰 Personal Gateway</div>
+        <div class="nav-links">
+            <a href="/dashboard">📊 Dashboard</a>
+            <a href="/generate">➕ New QR</a>
+            <a href="/api-docs">📚 API Docs</a>
+            <a href="/logout">🚪 Logout</a>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <h1>🔑 API Keys</h1>
+        
+        <div class="api-form">
+            <h2>Generate New API Key</h2>
+            <form id="apiForm">
+                <div class="form-group">
+                    <label>User Name</label>
+                    <input type="text" id="user_name" placeholder="User name" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="email" placeholder="Email" required>
+                </div>
+                <button type="submit" class="btn-primary">Generate API Key</button>
+            </form>
+            <div id="apiResult"></div>
+        </div>
+        
+        <div class="api-list">
+            <h2>Your API Keys</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>API Key</th>
+                            <th>User</th>
+                            <th>Email</th>
+                            <th>Created</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for key in keys %}
+                        <tr>
+                            <td><code>{{ key.api_key }}</code></td>
+                            <td>{{ key.user_name }}</td>
+                            <td>{{ key.email }}</td>
+                            <td>{{ key.created_at }}</td>
+                            <td>
+                                {% if key.is_active %}
+                                <span class="badge success">✅ Active</span>
+                                {% else %}
+                                <span class="badge danger">❌ Inactive</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('apiForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const result = document.getElementById('apiResult');
+            const formData = new FormData(this);
+            
+            result.innerHTML = 'Generating...';
+            result.className = 'loading';
+            
+            try {
+                const response = await fetch('/api-keys', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    result.innerHTML = `
+                        ✅ API Key Generated!
+                        <p><strong>Key:</strong> <code>${data.api_key}</code></p>
+                        <p><strong>User:</strong> ${data.user_name}</p>
+                        <p><strong>Email:</strong> ${data.email}</p>
+                    `;
+                    result.className = 'success';
+                    setTimeout(() => location.reload(), 3000);
+                }
+            } catch(error) {
+                result.innerHTML = '❌ Error generating API key';
+                result.className = 'error';
+            }
+        });
+    </script>
+</body>
+</html>

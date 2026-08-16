@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Docs - Personal Gateway</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">💰 Personal Gateway</div>
+        <div class="nav-links">
+            <a href="/dashboard">📊 Dashboard</a>
+            <a href="/generate">➕ New QR</a>
+            <a href="/api-keys">🔑 API Keys</a>
+            <a href="/logout">🚪 Logout</a>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <h1>📚 API Documentation</h1>
+        
+        <div class="api-docs">
+            <div class="endpoint">
+                <h3>Create Payment</h3>
+                <p><strong>URL:</strong> <code>{{ gateway_url }}api/create</code></p>
+                <p><strong>Method:</strong> POST</p>
+                <p><strong>Headers:</strong></p>
+                <pre>X-API-Key: YOUR_API_KEY</pre>
+                <p><strong>Body (JSON):</strong></p>
+                <pre>{"amount": 100}</pre>
+                <p><strong>Response:</strong></p>
+                <pre>{
+    "status": "success",
+    "order_id": "ORD_20240101_ABC123",
+    "amount": 100,
+    "qr_code": "data:image/png;base64,...",
+    "upi_id": "9817317740@fam"
+}</pre>
+            </div>
+            
+            <div class="endpoint">
+                <h3>Verify Payment</h3>
+                <p><strong>URL:</strong> <code>{{ gateway_url }}api/verify</code></p>
+                <p><strong>Method:</strong> POST</p>
+                <p><strong>Headers:</strong></p>
+                <pre>X-API-Key: YOUR_API_KEY</pre>
+                <p><strong>Body (JSON):</strong></p>
+                <pre>{
+    "order_id": "ORD_20240101_ABC123",
+    "transaction_id": "1234567890"
+}</pre>
+                <p><strong>Response:</strong></p>
+                <pre>{
+    "status": "success",
+    "message": "Payment verified"
+}</pre>
+            </div>
+            
+            <div class="endpoint">
+                <h3>Live Transaction Feed</h3>
+                <p>Every transaction made via your API will appear live:</p>
+                <ul>
+                    <li>✅ Transaction ID added automatically</li>
+                    <li>📝 Shows which Order ID</li>
+                    <li>🔄 Real-time status updates</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

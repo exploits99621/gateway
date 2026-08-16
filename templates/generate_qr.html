@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate QR - Personal Gateway</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">💰 Personal Gateway</div>
+        <div class="nav-links">
+            <a href="/dashboard">📊 Dashboard</a>
+            <a href="/api-keys">🔑 API Keys</a>
+            <a href="/api-docs">📚 API Docs</a>
+            <a href="/logout">🚪 Logout</a>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="qr-generator">
+            <h1>📱 Generate Payment QR</h1>
+            
+            <form method="POST" class="qr-form">
+                <div class="form-group">
+                    <label>Amount (₹)</label>
+                    <input type="number" name="amount" placeholder="Enter amount" 
+                           min="1" step="0.01" required>
+                </div>
+                <button type="submit" class="btn-primary">Generate QR</button>
+            </form>
+            
+            <div class="quick-amounts">
+                <button onclick="setAmount(1)">₹1</button>
+                <button onclick="setAmount(5)">₹5</button>
+                <button onclick="setAmount(10)">₹10</button>
+                <button onclick="setAmount(50)">₹50</button>
+                <button onclick="setAmount(100)">₹100</button>
+                <button onclick="setAmount(500)">₹500</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function setAmount(amount) {
+            document.querySelector('input[name="amount"]').value = amount;
+            document.querySelector('form').submit();
+        }
+    </script>
+</body>
+</html>

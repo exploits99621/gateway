@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Payment - Personal Gateway</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">💰 Personal Gateway</div>
+        <div class="nav-links">
+            <a href="/dashboard">📊 Dashboard</a>
+            <a href="/generate">➕ New QR</a>
+            <a href="/logout">🚪 Logout</a>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="verify-container">
+            <h1>✅ Verify Payment</h1>
+            
+            <div class="qr-display">
+                <img src="{{ qr_code }}" alt="QR Code">
+                <p class="order-id">Order: <strong>{{ order_id }}</strong></p>
+                <p class="amount">Amount: <strong>₹{{ amount }}</strong></p>
+                <p class="upi">UPI: <strong>{{ upi_id }}</strong></p>
+            </div>
+            
+            <form id="verifyForm" class="verify-form">
+                <div class="form-group">
+                    <label>Enter Transaction ID (UTR)</label>
+                    <input type="text" id="transaction_id" placeholder="Enter transaction ID" required>
+                    <small>Enter the UTR/Transaction ID from your UPI app</small>
+                </div>
+                <button type="submit" class="btn-primary">🔍 Verify Payment</button>
+            </form>
+            
+            <div id="result" class="result-box"></div>
+            
+            <div class="auto-verify-info">
+                <p>💡 System will auto-verify if you don't enter</p>
+                <p>🔄 Auto-retry after 5-6 seconds if pending</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('verifyForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const transaction_id = document.getElementById('transaction_id').value;
+            const resultDiv = document.getElementById('result');
+            
+            resultDiv.innerHTML = '⏳ Verifying...';
+            resultDiv.className = 'result-box loading';
+            
+            try {
+                const response = await fetch('/verify', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    body: `order_id={{ order_id }}&transaction_id=${transaction_id}`
+                });
+                
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    resultDiv.innerHTML = `✅ Payment Verified! Amount: ₹${data.amount}`;
+                    resultDiv.className = 'result-box success';
+                    setTimeout(() => {
+                        window.location.href = '/dashboard';
+                    }, 3000);
+                } else if (data.status === 'cancelled') {
+                    resultDiv.innerHTML = '❌ Payment cancelled. Please try again.';
+                    resultDiv.className = 'result-box error';
+                } else {
+                    resultDiv.innerHTML = `⏳ ${data.message}`;
+                    resultDiv.className = 'result-box pending';
+                }
+            } catch(error) {
+                resultDiv.innerHTML = '❌ Error verifying payment';
+                resultDiv.className = 'result-box error';
+            }
+        });
+    </script>
+</body>
+</html>
