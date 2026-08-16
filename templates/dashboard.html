@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Personal Gateway</title>
+    <title>Dashboard - Payment Gateway</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <nav class="navbar">
-        <div class="nav-brand">💰 Personal Gateway</div>
+        <div class="nav-brand">💰 Gateway</div>
         <div class="nav-links">
             <a href="/generate">➕ New QR</a>
             <a href="/api-keys">🔑 API Keys</a>
@@ -19,41 +19,17 @@
     
     <div class="container">
         <div class="stats-grid">
-            <div class="stat-card">
-                <h3>Total Orders</h3>
-                <p class="number">{{ total }}</p>
-            </div>
-            <div class="stat-card success">
-                <h3>✅ Success</h3>
-                <p class="number">{{ success }}</p>
-            </div>
-            <div class="stat-card pending">
-                <h3>⏳ Pending</h3>
-                <p class="number">{{ pending }}</p>
-            </div>
-            <div class="stat-card info">
-                <h3>💳 FamPay</h3>
-                <p class="number small">{{ settings.fampay_id }}</p>
-            </div>
-        </div>
-        
-        <div class="quick-actions">
-            <a href="/generate" class="btn-primary">📱 Generate QR Code</a>
+            <div class="stat-card"><h3>Total Orders</h3><p class="number">{{ total }}</p></div>
+            <div class="stat-card success"><h3>✅ Success</h3><p class="number">{{ success }}</p></div>
+            <div class="stat-card pending"><h3>⏳ Pending</h3><p class="number">{{ pending }}</p></div>
+            <div class="stat-card revenue"><h3>💰 Revenue</h3><p class="number">₹{{ revenue }}</p></div>
         </div>
         
         <div class="recent">
             <h2>Recent Transactions</h2>
             <div class="table-container">
                 <table>
-                    <thead>
-                        <tr>
-                            <th>Order ID</th>
-                            <th>Amount</th>
-                            <th>Status</th>
-                            <th>Transaction ID</th>
-                            <th>Created</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>Order ID</th><th>Amount</th><th>Status</th><th>Transaction ID</th><th>Created</th></tr></thead>
                     <tbody>
                         {% for txn in transactions %}
                         <tr>
@@ -78,30 +54,14 @@
         </div>
         
         <div class="status-bar">
-            <div class="status-item">
-                <span class="dot green"></span>
-                System: <strong>Active</strong>
-            </div>
-            <div class="status-item">
-                <span class="dot green"></span>
-                Gmail: <strong>{{ settings.gmail_email }}</strong>
-            </div>
-            <div class="status-item">
-                <span class="dot green"></span>
-                FamPay: <strong>{{ settings.fampay_id }}</strong>
-            </div>
-            <div class="status-item">
-                <span class="dot green"></span>
-                Auto-Verify: <strong>Running</strong>
-            </div>
+            <div class="status-item"><span class="dot green"></span> System: <strong>Active</strong></div>
+            <div class="status-item"><span class="dot green"></span> Gmail: <strong>{{ settings.gmail_email }}</strong></div>
+            <div class="status-item"><span class="dot green"></span> FamPay: <strong>{{ settings.fampay_id }}</strong></div>
         </div>
     </div>
     
     <script>
-        // Auto-refresh every 30 seconds
-        setInterval(() => {
-            location.reload();
-        }, 30000);
+        setInterval(() => location.reload(), 30000);
     </script>
 </body>
 </html>
