@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Personal Gateway</title>
+    <title>Login - Payment Gateway</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="login-container">
         <div class="login-box">
-            <h1>🔐 Personal Gateway</h1>
+            <h1>💰 Personal Gateway</h1>
             <p class="subtitle">Login once, use forever</p>
             
             {% if error %}
@@ -19,25 +19,21 @@
             <form method="POST">
                 <div class="form-group">
                     <label>📧 Gmail Email</label>
-                    <input type="email" name="gmail" value="exploitshacker32@gmail.com" required>
+                    <input type="email" name="gmail" placeholder="your@gmail.com" required>
                 </div>
-                
                 <div class="form-group">
                     <label>🔑 Gmail App Password</label>
-                    <input type="password" name="app_password" placeholder="lkyi fewh erps abxk" required>
+                    <input type="password" name="app_password" placeholder="App Password" required>
                     <small>Generate from Google Account > App Passwords</small>
                 </div>
-                
                 <div class="form-group">
-                    <label>💳 Your FamPay UPI ID</label>
-                    <input type="text" name="fampay_id" value="9817317740@fam" required>
+                    <label>💳 FamPay UPI ID</label>
+                    <input type="text" name="fampay_id" placeholder="9817317740@fam" value="9817317740@fam">
                 </div>
-                
                 <div class="form-group">
                     <label>🔐 FamPay API Key</label>
-                    <input type="text" name="fampay_api_key" value="FAM_371735AC5A8C95B29EDB8EA7E7CD51DA57863D3C" required>
+                    <input type="text" name="fampay_api_key" placeholder="FAM_..." value="FAM_371735AC5A8C95B29EDB8EA7E7CD51DA57863D3C">
                 </div>
-                
                 <button type="submit" class="btn-primary">🚀 Activate Gateway</button>
             </form>
             
