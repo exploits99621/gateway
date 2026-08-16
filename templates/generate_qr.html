@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generate QR - Personal Gateway</title>
+    <title>Generate QR - Gateway</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <nav class="navbar">
-        <div class="nav-brand">💰 Personal Gateway</div>
+        <div class="nav-brand">💰 Gateway</div>
         <div class="nav-links">
             <a href="/dashboard">📊 Dashboard</a>
             <a href="/api-keys">🔑 API Keys</a>
-            <a href="/api-docs">📚 API Docs</a>
             <a href="/logout">🚪 Logout</a>
         </div>
     </nav>
@@ -21,11 +20,14 @@
         <div class="qr-generator">
             <h1>📱 Generate Payment QR</h1>
             
+            {% if error %}
+            <div class="error-message">{{ error }}</div>
+            {% endif %}
+            
             <form method="POST" class="qr-form">
                 <div class="form-group">
                     <label>Amount (₹)</label>
-                    <input type="number" name="amount" placeholder="Enter amount" 
-                           min="1" step="0.01" required>
+                    <input type="number" name="amount" placeholder="Enter amount" min="1" step="0.01" required>
                 </div>
                 <button type="submit" class="btn-primary">Generate QR</button>
             </form>
