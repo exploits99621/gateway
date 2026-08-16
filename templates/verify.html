@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verify Payment - Personal Gateway</title>
+    <title>Verify Payment - Gateway</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <nav class="navbar">
-        <div class="nav-brand">💰 Personal Gateway</div>
+        <div class="nav-brand">💰 Gateway</div>
         <div class="nav-links">
             <a href="/dashboard">📊 Dashboard</a>
             <a href="/generate">➕ New QR</a>
@@ -48,7 +48,6 @@
     <script>
         document.getElementById('verifyForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
             const transaction_id = document.getElementById('transaction_id').value;
             const resultDiv = document.getElementById('result');
             
@@ -67,9 +66,7 @@
                 if (data.status === 'success') {
                     resultDiv.innerHTML = `✅ Payment Verified! Amount: ₹${data.amount}`;
                     resultDiv.className = 'result-box success';
-                    setTimeout(() => {
-                        window.location.href = '/dashboard';
-                    }, 3000);
+                    setTimeout(() => window.location.href = '/dashboard', 3000);
                 } else if (data.status === 'cancelled') {
                     resultDiv.innerHTML = '❌ Payment cancelled. Please try again.';
                     resultDiv.className = 'result-box error';
