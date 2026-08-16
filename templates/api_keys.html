@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API Keys - Personal Gateway</title>
+    <title>API Keys - Gateway</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <nav class="navbar">
-        <div class="nav-brand">💰 Personal Gateway</div>
+        <div class="nav-brand">💰 Gateway</div>
         <div class="nav-links">
             <a href="/dashboard">📊 Dashboard</a>
             <a href="/generate">➕ New QR</a>
@@ -40,15 +40,7 @@
             <h2>Your API Keys</h2>
             <div class="table-container">
                 <table>
-                    <thead>
-                        <tr>
-                            <th>API Key</th>
-                            <th>User</th>
-                            <th>Email</th>
-                            <th>Created</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>API Key</th><th>User</th><th>Email</th><th>Created</th><th>Status</th></tr></thead>
                     <tbody>
                         {% for key in keys %}
                         <tr>
@@ -56,13 +48,7 @@
                             <td>{{ key.user_name }}</td>
                             <td>{{ key.email }}</td>
                             <td>{{ key.created_at }}</td>
-                            <td>
-                                {% if key.is_active %}
-                                <span class="badge success">✅ Active</span>
-                                {% else %}
-                                <span class="badge danger">❌ Inactive</span>
-                                {% endif %}
-                            </td>
+                            <td>{% if key.is_active %}<span class="badge success">✅ Active</span>{% else %}<span class="badge danger">❌ Inactive</span>{% endif %}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -74,7 +60,6 @@
     <script>
         document.getElementById('apiForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
             const result = document.getElementById('apiResult');
             const formData = new FormData(this);
             
@@ -86,16 +71,9 @@
                     method: 'POST',
                     body: formData
                 });
-                
                 const data = await response.json();
-                
                 if (data.status === 'success') {
-                    result.innerHTML = `
-                        ✅ API Key Generated!
-                        <p><strong>Key:</strong> <code>${data.api_key}</code></p>
-                        <p><strong>User:</strong> ${data.user_name}</p>
-                        <p><strong>Email:</strong> ${data.email}</p>
-                    `;
+                    result.innerHTML = `✅ API Key Generated!<p><strong>Key:</strong> <code>${data.api_key}</code></p><p><strong>User:</strong> ${data.user_name}</p>`;
                     result.className = 'success';
                     setTimeout(() => location.reload(), 3000);
                 }
