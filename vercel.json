@@ -5,8 +5,7 @@
       "src": "app.py",
       "use": "@vercel/python",
       "config": {
-        "runtime": "python3.9",
-        "installCommand": "pip install -r requirements.txt"
+        "runtime": "python3.9"
       }
     }
   ],
@@ -19,9 +18,5 @@
       "src": "/(.*)",
       "dest": "app.py"
     }
-  ],
-  "env": {
-    "SUPABASE_URL": "@supabase_url",
-    "SUPABASE_KEY": "@supabase_key"
-  }
+  ]
 }
